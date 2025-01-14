@@ -28,3 +28,9 @@ import Config
 # here (which is why it is important to import them last).
 #
 #     import_config "#{Mix.env}.exs"
+
+config :git_ops,
+  mix_project: Enquirer.Mixfile,
+  changelog_file: "CHANGELOG.md",
+  repository_url: "https://github.com/NarrativeApp/enquirer",
+  manage_mix_version?: true
