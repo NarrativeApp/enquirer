@@ -130,11 +130,9 @@ defmodule Enquirer do
   defp do_get(string), do: string |> IO.gets() |> remove_trailing
 
   defp string_to_integer_safe(str) do
-    try do
-      String.to_integer(str)
-    rescue
-      ArgumentError -> nil
-    end
+    String.to_integer(str)
+  rescue
+    ArgumentError -> nil
   end
 
   defp value_from_position(keywords, position) do
