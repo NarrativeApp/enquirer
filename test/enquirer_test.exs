@@ -1,4 +1,5 @@
 require IEx
+
 defmodule EnquirerTest do
   use ExUnit.Case
   import ExUnit.CaptureIO
@@ -36,10 +37,11 @@ defmodule EnquirerTest do
     test "it gets input from the user" do
       fun = fn ->
         "What is your name?"
-        |> Enquirer.get
+        |> Enquirer.get()
         |> elem(1)
-        |> IO.write
+        |> IO.write()
       end
+
       assert capture_io([input: "John Smith", capture_prompt: false], fun) == "John Smith"
     end
   end
@@ -47,90 +49,116 @@ defmodule EnquirerTest do
   describe "choose" do
     test "it asks the user to choose an option" do
       fun = fn ->
-        Enquirer.choose "Please choose an option",
+        Enquirer.choose("Please choose an option",
           option1: "Option 1",
           option2: "Option 2",
           option3: "Option 3"
+        )
       end
+
       expected_output = """
-Please choose an option
-1. Option 1
-2. Option 2
-3. Option 3
-"""
+      Please choose an option
+      1. Option 1
+      2. Option 2
+      3. Option 3
+      """
+
       assert capture_io([input: "1", capture_prompt: true], fun) == expected_output
     end
 
     test "it returns the chosen output" do
       fun = fn ->
-        result = Enquirer.choose "Please option an option",
-          option1: "Option 1",
-          option2: "Option 2",
-          option3: "Option 3"
-        result |> elem(1) |> IO.write
+        result =
+          Enquirer.choose("Please option an option",
+            option1: "Option 1",
+            option2: "Option 2",
+            option3: "Option 3"
+          )
+
+        result |> elem(1) |> IO.write()
       end
+
       assert capture_io([input: "1", capture_prompt: false], fun) == "option1"
     end
 
     test "it returns the last chosen output" do
       fun = fn ->
-        result = Enquirer.choose "Please option an option",
-          option1: "Option 1",
-          option2: "Option 2",
-          option3: "Option 3"
-        result |> elem(1) |> IO.write
+        result =
+          Enquirer.choose("Please option an option",
+            option1: "Option 1",
+            option2: "Option 2",
+            option3: "Option 3"
+          )
+
+        result |> elem(1) |> IO.write()
       end
+
       assert capture_io([input: "3", capture_prompt: false], fun) == "option3"
     end
 
     test "it returns an error when an invalid option is chosen" do
       fun = fn ->
-        result = Enquirer.choose "Please option an option",
-          option1: "Option 1",
-          option2: "Option 2",
-          option3: "Option 3"
-        result |> elem(0) |> IO.write
+        result =
+          Enquirer.choose("Please option an option",
+            option1: "Option 1",
+            option2: "Option 2",
+            option3: "Option 3"
+          )
+
+        result |> elem(0) |> IO.write()
       end
+
       assert capture_io([input: "4", capture_prompt: false], fun) == "error"
     end
 
     test "it returns an error when an invalid string is entered" do
       fun = fn ->
-        result = Enquirer.choose "Please option an option",
-          option1: "Option 1",
-          option2: "Option 2",
-          option3: "Option 3"
-        result |> elem(0) |> IO.write
+        result =
+          Enquirer.choose("Please option an option",
+            option1: "Option 1",
+            option2: "Option 2",
+            option3: "Option 3"
+          )
+
+        result |> elem(0) |> IO.write()
       end
+
       assert capture_io([input: "foo", capture_prompt: false], fun) == "error"
     end
 
     test "it displays the default option when a default is specified" do
       fun = fn ->
-        Enquirer.choose "Please choose an option",
+        Enquirer.choose("Please choose an option",
           option1: "Option 1",
           option2: "Option 2",
           option3: "Option 3",
           default: :option1
+        )
       end
+
       expected_output = """
-Please choose an option
-1. Option 1 (default)
-2. Option 2
-3. Option 3
-"""
+      Please choose an option
+      1. Option 1 (default)
+      2. Option 2
+      3. Option 3
+      """
+
       assert capture_io([input: "1", capture_prompt: true], fun) == expected_output
     end
 
     test "it chooses the default option if no option is chosen and a default is provided" do
       fun = fn ->
-        result = Enquirer.choose "Please option an option",
-          option1: "Option 1",
-          option2: "Option 2",
-          option3: "Option 3",
-          default: :option1
-        result |> elem(1) |> IO.write
+        result =
+          Enquirer.choose("Please option an option",
+            option1: "Option 1",
+            option2: "Option 2",
+            option3: "Option 3",
+            default: :option1
+          )
+
+        result |> elem(1) |> IO.write()
       end
+
       assert capture_io([input: "\n", capture_prompt: false], fun) == "option1"
     end
   end
@@ -140,6 +168,7 @@ Please choose an option
       fun = fn ->
         Enquirer.ask("Is the sky blue?")
       end
+
       expected_output = "Is the sky blue? [Y/n]"
       assert capture_io([input: "Y", capture_prompt: true], fun) == expected_output
     end
@@ -147,80 +176,90 @@ Please choose an option
     test "it returns true if the user chooses Y" do
       fun = fn ->
         result = Enquirer.ask("Is the sky blue?")
-        result |> elem(1) |> IO.write
+        result |> elem(1) |> IO.write()
       end
+
       assert capture_io([input: "Y", capture_prompt: false], fun) == "true"
     end
 
     test "it returns true if the user chooses y" do
       fun = fn ->
         result = Enquirer.ask("Is the sky blue?")
-        result |> elem(1) |> IO.write
+        result |> elem(1) |> IO.write()
       end
+
       assert capture_io([input: "y", capture_prompt: false], fun) == "true"
     end
 
     test "it returns true if the user chooses yes" do
       fun = fn ->
         result = Enquirer.ask("Is the sky blue?")
-        result |> elem(1) |> IO.write
+        result |> elem(1) |> IO.write()
       end
+
       assert capture_io([input: "yes", capture_prompt: false], fun) == "true"
     end
 
     test "it returns true if the user chooses Yes" do
       fun = fn ->
         result = Enquirer.ask("Is the sky blue?")
-        result |> elem(1) |> IO.write
+        result |> elem(1) |> IO.write()
       end
+
       assert capture_io([input: "Yes", capture_prompt: false], fun) == "true"
     end
 
     test "it returns false if the user chooses N" do
       fun = fn ->
         result = Enquirer.ask("Is the sky blue?")
-        result |> elem(1) |> IO.write
+        result |> elem(1) |> IO.write()
       end
+
       assert capture_io([input: "N", capture_prompt: false], fun) == "false"
     end
 
     test "it returns false if the user chooses n" do
       fun = fn ->
         result = Enquirer.ask("Is the sky blue?")
-        result |> elem(1) |> IO.write
+        result |> elem(1) |> IO.write()
       end
+
       assert capture_io([input: "n", capture_prompt: false], fun) == "false"
     end
 
     test "it returns false if the user chooses no" do
       fun = fn ->
         result = Enquirer.ask("Is the sky blue?")
-        result |> elem(1) |> IO.write
+        result |> elem(1) |> IO.write()
       end
+
       assert capture_io([input: "no", capture_prompt: false], fun) == "false"
     end
 
     test "it returns false if the user chooses No" do
       fun = fn ->
         result = Enquirer.ask("Is the sky blue?")
-        result |> elem(1) |> IO.write
+        result |> elem(1) |> IO.write()
       end
+
       assert capture_io([input: "No", capture_prompt: false], fun) == "false"
     end
 
     test "it returns true if the user presses return and the default is true" do
       fun = fn ->
         result = Enquirer.ask("Is the sky blue?", true)
-        result |> elem(1) |> IO.write
+        result |> elem(1) |> IO.write()
       end
+
       assert capture_io([input: "\n", capture_prompt: false], fun) == "true"
     end
 
     test "it returns false if the user presses return and the default is false" do
       fun = fn ->
         result = Enquirer.ask("Is the sky blue?", false)
-        result |> elem(1) |> IO.write
+        result |> elem(1) |> IO.write()
       end
+
       assert capture_io([input: "\n", capture_prompt: false], fun) == "false"
     end
 
@@ -228,6 +267,7 @@ Please choose an option
       fun = fn ->
         Enquirer.ask("Is the sky blue?", false)
       end
+
       expected_output = "Is the sky blue? [y/N]"
       assert capture_io([input: "Y", capture_prompt: true], fun) == expected_output
     end
@@ -238,16 +278,19 @@ Please choose an option
       fun = fn ->
         Enquirer.get_list("Enter your favourite colours")
       end
+
       expected_output = "Enter your favourite colours\n* * "
       assert capture_io([input: "Blue\n\n", capture_prompt: true], fun) == expected_output
     end
 
     test "returns a list or the input values" do
       prompt = "Enter your favourite colours"
+
       fun = fn ->
         result = Enquirer.get_list(prompt)
-        result |> elem(1) |> Enum.join(",") |> IO.write
+        result |> elem(1) |> Enum.join(",") |> IO.write()
       end
+
       expected_output = "#{prompt}\nRed,Blue"
       assert capture_io([input: "Red\nBlue\n\n", capture_prompt: false], fun) == expected_output
     end

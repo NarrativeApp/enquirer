@@ -10,13 +10,15 @@ defmodule Enquirer do
   Valid colours are `:red`, `:green` and `:yellow`
   """
   def say(something, colour \\ nil) do
-    ansi = case colour do
-      :red    -> red()
-      :green  -> green()
-      :yellow -> yellow()
-      _       -> ""
-    end
-    IO.puts "#{ansi}#{something}#{default_color()}"
+    ansi =
+      case colour do
+        :red -> red()
+        :green -> green()
+        :yellow -> yellow()
+        _ -> ""
+      end
+
+    IO.puts("#{ansi}#{something}#{default_color()}")
     {:ok, nil}
   end
 
@@ -54,21 +56,27 @@ defmodule Enquirer do
   """
   def choose(question, opts) do
     {default, choices} = Keyword.pop(opts, :default)
+
     option_string =
       choices
-      |> Enum.with_index
-      |> Enum.map_join(fn {{key, val}, index} -> "#{index + 1}. #{val}#{if key == default, do: " (default)"}\n" end)
+      |> Enum.with_index()
+      |> Enum.map_join(fn {{key, val}, index} ->
+        "#{index + 1}. #{val}#{if key == default, do: " (default)"}\n"
+      end)
 
     user_input = "#{question}\n#{option_string}" |> do_get
     user_choice = string_to_integer_safe(user_input)
 
     cond do
-      user_choice && (user_choice <= Enum.count(choices)) ->
+      user_choice && user_choice <= Enum.count(choices) ->
         {:ok, value_from_position(choices, user_choice)}
+
       user_choice ->
         {:error, nil}
-      (user_input == "") && default ->
+
+      user_input == "" && default ->
         {:ok, default}
+
       true ->
         {:error, nil}
     end
@@ -89,11 +97,12 @@ defmodule Enquirer do
   """
   def ask(question, default \\ true) do
     user_input = "#{question} [#{if default, do: "Y/n", else: "y/N"}]" |> do_get
+
     cond do
       user_input =~ ~r/^y(es)?/i -> {:ok, true}
-      user_input =~ ~r/^n(o)?/i  -> {:ok, false}
-      user_input == ""           -> {:ok, default}
-      true                       -> {:error, nil}
+      user_input =~ ~r/^n(o)?/i -> {:ok, false}
+      user_input == "" -> {:ok, default}
+      true -> {:error, nil}
     end
   end
 
@@ -105,7 +114,7 @@ defmodule Enquirer do
   ```
   """
   def get_list(question) do
-    IO.puts "#{question}"
+    IO.puts("#{question}")
     {:ok, do_get_list()}
   end
 
@@ -118,14 +127,12 @@ defmodule Enquirer do
     String.replace_trailing(str, "\n", "")
   end
 
-  defp do_get(string), do: string |> IO.gets |> remove_trailing
+  defp do_get(string), do: string |> IO.gets() |> remove_trailing
 
   defp string_to_integer_safe(str) do
-    try do
-      String.to_integer str
-    rescue
-      ArgumentError -> nil
-    end
+    String.to_integer(str)
+  rescue
+    ArgumentError -> nil
   end
 
   defp value_from_position(keywords, position) do
@@ -133,5 +140,4 @@ defmodule Enquirer do
     |> Enum.at(position - 1)
     |> elem(0)
   end
-
 end
