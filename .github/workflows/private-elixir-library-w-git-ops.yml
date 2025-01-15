@@ -227,7 +227,7 @@ jobs:
         id: original-app-info
         run: MIX_ENV=test mix git_ops.project_info --format github-actions
       - name: Run mix git_ops.release
-        run: MIX_ENV=test mix git_ops.release --yes || true
+        run: MIX_ENV=test mix git_ops.release --yes --no-major || true
       - name: Checking for new app version
         id: app-info
         run: MIX_ENV=test mix git_ops.project_info --format github-actions

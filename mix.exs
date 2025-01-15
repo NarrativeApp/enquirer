@@ -31,7 +31,7 @@ defmodule Enquirer.Mixfile do
   defp deps do
     [
       {:ex_doc, "~> 0.12", only: [:dev, :test]},
-      {:git_ops, "~> 2.2", only: [:dev, :test]},
+      {:git_ops, "~> 2.6", only: [:dev, :test]},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
     ]
   end
