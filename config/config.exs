@@ -34,4 +34,4 @@ config :git_ops,
   changelog_file: "CHANGELOG.md",
   repository_url: "https://github.com/NarrativeApp/enquirer",
   manage_mix_version?: true,
-  version_tag_prefix: ""
+  version_tag_prefix: "v"
