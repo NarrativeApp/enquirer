@@ -30,7 +30,8 @@ import Config
 #     import_config "#{Mix.env}.exs"
 
 config :git_ops,
-  mix_project: Enquirer.Mixfile,
+  mix_project: Mix.Project.get!(),
   changelog_file: "CHANGELOG.md",
   repository_url: "https://github.com/NarrativeApp/enquirer",
-  manage_mix_version?: true
+  manage_mix_version?: true,
+  version_tag_prefix: "v"
