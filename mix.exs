@@ -24,7 +24,7 @@ defmodule Enquirer.Mixfile do
     [
       maintainers: ["Martin Pretorius"],
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/glasnoster/enquirer"}
+      links: %{"GitHub" => "https://github.com/NarrativeApp/enquirer"}
     ]
   end
 
