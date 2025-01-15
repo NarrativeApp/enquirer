@@ -225,18 +225,12 @@ jobs:
         run: git config user.email '41898282+github-actions[bot]@users.noreply.github.com' ; git config user.name 'github-actions'
       - name: Retrieving the current app version
         id: original-app-info
-        run: |
-          echo "Retrieving original app version..."
-          MIX_ENV=test mix git_ops.project_info --format github-actions
-          echo "Original App Version: ${{ steps.original-app-info.outputs.app_version }}"
+        run: MIX_ENV=test mix git_ops.project_info --format github-actions
       - name: Run mix git_ops.release
         run: MIX_ENV=test mix git_ops.release --yes --no-major || true
       - name: Checking for new app version
         id: app-info
-        run: |
-          echo "Retrieving new app version..."
-          MIX_ENV=test mix git_ops.project_info --format github-actions
-          echo "New App Version: ${{ steps.app-info.outputs.app_version }}"
+        run: MIX_ENV=test mix git_ops.project_info --format github-actions
       - name: Building hex package
         if: ${{ steps.original-app-info.outputs.app_version != steps.app-info.outputs.app_version }}
         run: mix hex.build -o ${{ steps.app-info.outputs.app_name }}-${{ steps.app-info.outputs.app_version }}.tar
