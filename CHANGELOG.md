@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.2](https://github.com/NarrativeApp/enquirer/compare/v0.1.1...v0.1.2) (2025-01-16)
+
+
+
+
+### Bug Fixes:
+
+* try to force a release
+
 ## [v0.1.1](https://github.com/NarrativeApp/enquirer/compare/v0.1.1...v0.1.1) (2025-01-16)
 
 
